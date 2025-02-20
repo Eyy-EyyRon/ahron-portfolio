@@ -19,11 +19,7 @@ const Hero = () => {
         </p>
       </div>
       <div className="hero-image mt-10 md:mt-0">
-        <img
-          src="src\assets\images\profile.jpg"
-          alt="GUY"
-          className="rounded-full shadow-lg max-w-sm md:max-w-md"
-        />
+      <img src="/assets/images/img.jpeg" alt="Profile" />
       </div>
     </section>
   );
