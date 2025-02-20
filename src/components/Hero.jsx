@@ -1,6 +1,8 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
+import '../App'; 
+
 
 const Hero = () => {
   return (
@@ -15,14 +17,10 @@ const Hero = () => {
         <p className="text-xl md:text-2xl text-gray-400">
          Junior UI | UX Developer
         </p>
-        <button className="cta-button bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-full flex items-center justify-center space-x-3 transition-all duration-300 shadow-lg hover:shadow-xl">
-          <span className="text-lg font-semibold"></span>
-          <FontAwesomeIcon icon={faArrowDown} className="text-3xl" />
-        </button>
       </div>
       <div className="hero-image mt-10 md:mt-0">
         <img
-          src="./src/assets/images/meme.jpg"
+          src="./src/assets/images/profile.jpg"
           alt="GUY"
           className="rounded-full shadow-lg max-w-sm md:max-w-md"
         />
