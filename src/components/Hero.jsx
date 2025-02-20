@@ -20,7 +20,7 @@ const Hero = () => {
       </div>
       <div className="hero-image mt-10 md:mt-0">
         <img
-          src="./src/assets/images/profile.jpg"
+          src="src\assets\images\profile.jpg"
           alt="GUY"
           className="rounded-full shadow-lg max-w-sm md:max-w-md"
         />
