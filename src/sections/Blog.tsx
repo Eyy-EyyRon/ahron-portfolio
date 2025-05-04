@@ -17,25 +17,24 @@ const Blog: React.FC<BlogProps> = ({ onBlogClick }) => {
       id: 1,
       title: "Warmup Morning Mountain Bike Ride",
       excerpt: "A quick morning ride to warm up the legs and enjoy the fresh air.",
-      content: "Morning Ride Going to Vitali, Zamboanga City. This ride was a great way to start the day, with beautiful views and a refreshing breeze. I took it easy, focusing on enjoying the scenery and warming up my legs for the day ahead.",
+      content: "Morning Ride Going to Vitali, Zamboanga City...",
       date: "February 7, 2022",
       author: "Ahron Pasadilla",
       images: [
-        "assets/Vitali ride.png",
+        "assets/vitali-ride.png",
         "assets/view.png"
       ],
-      
       tags: ["Outdoor", "Sports", "Mountain Biking"]
     },
     {
       id: 2,
       title: "Black and White Photography",
       excerpt: "Exploring the beauty of monochrome photography.",
-      content: "Black and white photography has a unique charm that can evoke strong emotions. In this post, I share some of my favorite black and white shots, discussing the techniques I used to capture them and the stories behind each image.",
+      content: "Black and white photography has a unique charm...",
       date: "April 22, 2023",
       author: "Ahron Pasadilla",
       images: [
-        "assets/night traffic.png",
+        "assets/night-traffic.png",
         "assets/haiku.png"
       ],
       tags: ["Photography", "Web Design"]
@@ -44,12 +43,12 @@ const Blog: React.FC<BlogProps> = ({ onBlogClick }) => {
       id: 3,
       title: "Pueblo / Zamboanga City",
       excerpt: "A glimpse into the vibrant culture and history of Zamboanga City.",
-      content: "Zamboanga City is known for its rich culture and history. In this post, I share my experiences exploring the city, from its beautiful parks to its bustling markets. I also discuss the unique blend of cultures that make Zamboanga City a fascinating place to visit.",
+      content: "Zamboanga City is known for its rich culture and history...",
       date: "March 15, 2023",
       author: "Ahron Pasadilla",
       images: [
         "assets/pueblo.png",
-        "assets/pueblo 2.png"
+        "assets/pueblo-2.png"
       ],
       tags: ["POV", "Zamboanga City"]
     },
@@ -57,12 +56,11 @@ const Blog: React.FC<BlogProps> = ({ onBlogClick }) => {
       id: 4,
       title: "Research Forum",
       excerpt: "Recognizing the hard work and dedication of students in their research projects.",
-      content: "The Research Forum is an event that showcases the hard work and dedication of students in their research projects. In this post, I share my experiences attending the forum, highlighting some of the most impressive projects and the students behind them. It's a great opportunity to see the future of research and innovation.",
+      content: "The Research Forum is an event that showcases...",
       date: "May 2, 2025",
       author: "Ahron Pasadilla",
       images: [
-        "assets/research.png",
-       
+        "assets/research.png"
       ],
       tags: ["Forum", "Research"]
     },
@@ -70,23 +68,23 @@ const Blog: React.FC<BlogProps> = ({ onBlogClick }) => {
       id: 5,
       title: "Coffee hangout with friends",
       excerpt: "A relaxing day spent with friends over coffee.",
-      content: "Spending time with friends is always a great way to unwind. In this post, I share my experience of a coffee hangout with friends, discussing our favorite coffee spots and the conversations that made the day memorable. It's moments like these that remind us of the importance of friendship and connection.",
+      content: "Spending time with friends is always a great way to unwind...",
       date: "April 30, 2025",
       author: "Ahron Pasadilla",
       images: [
-        "assets/alegre.png",
+        "assets/alegre.png"
       ],
-      tags: [ "Caffeine", "Coffee"]
+      tags: ["Caffeine", "Coffee"]
     },
     {
       id: 6,
       title: "College of Computing Studies",
       excerpt: "A look into the College of Computing Studies and its impact on students.",
-      content: "The College of Computing Studies is a hub of innovation and learning. In this post, I discuss the various programs and initiatives that the college offers to students, highlighting the impact it has on their education and career prospects. From cutting-edge research to hands-on projects, the college is shaping the future of technology.",
+      content: "The College of Computing Studies is a hub of innovation...",
       date: "August 3, 2023",
       author: "Ahron Pasadilla",
       images: [
-        "assets/wmsu.png",
+        "assets/wmsu.png"
       ],
       tags: ["College"]
     },
@@ -94,28 +92,28 @@ const Blog: React.FC<BlogProps> = ({ onBlogClick }) => {
       id: 7,
       title: "Biking Adventures",
       excerpt: "Exploring the great outdoors on two wheels.",
-      content: "Biking is not just a mode of transportation; it's an adventure. In this post, I share my biking adventures, from scenic trails to challenging terrains. I discuss the gear I use, the places I've explored, and the joy of being in nature while riding. Whether you're a seasoned cyclist or a beginner, there's something for everyone in the world of biking.",
+      content: "Biking is not just a mode of transportation; it's an adventure...",
       date: "August 15, 2023",
       author: "Ahron Pasadilla",
       images: [
-        "assets/biking era.png",
+        "assets/biking-era.png"
       ],
-      tags: ["Outdoors", "Performance", "Adveture", "Mountain Biking"]
+      tags: ["Outdoors", "Performance", "Adventure", "Mountain Biking"]
     },
     {
       id: 8,
       title: "Crochet Collections",
       excerpt: "A showcase of beautiful crochet pieces.",
-      content: "Come Visit our Page Crochet Collections. FB Page: https://www.facebook.com/profile.php?id=61551776632530",
+      content: "Come Visit our Page Crochet Collections...",
       date: "October 25, 2023",
       author: "Ahron Pasadilla",
       images: [
-        "assets/Crochet Collections.png",
-        
+        "assets/crochet-collections.png"
       ],
       tags: ["Yarns", "Business", "Crochet"]
     },
   ];
+  
 
   // Number of cards to show at once based on screen size
   const getVisibleCards = () => {
