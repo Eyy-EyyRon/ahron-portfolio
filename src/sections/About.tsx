@@ -90,7 +90,7 @@ const About: React.FC = () => {
             <div className="relative animate-slideLeft">
               <div className="aspect-w-4 aspect-h-3 relative">
                 <img 
-                 src="assets/profile.png"
+                 src="/assets/profile.png"
                   alt="Professional headshot" 
                   className="rounded-lg object-cover w-full h-full"
                 />

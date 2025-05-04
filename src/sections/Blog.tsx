@@ -21,8 +21,8 @@ const Blog: React.FC<BlogProps> = ({ onBlogClick }) => {
       date: "February 7, 2022",
       author: "Ahron Pasadilla",
       images: [
-        "assets/vitali-ride.png",
-        "assets/view.png"
+        "/assets/vitali-ride.png",
+        "/assets/view.png"
       ],
       tags: ["Outdoor", "Sports", "Mountain Biking"]
     },
@@ -34,8 +34,8 @@ const Blog: React.FC<BlogProps> = ({ onBlogClick }) => {
       date: "April 22, 2023",
       author: "Ahron Pasadilla",
       images: [
-        "assets/night-traffic.png",
-        "assets/haiku.png"
+        "/assets/night-traffic.png",
+        "/assets/haiku.png"
       ],
       tags: ["Photography", "Web Design"]
     },
@@ -47,8 +47,8 @@ const Blog: React.FC<BlogProps> = ({ onBlogClick }) => {
       date: "March 15, 2023",
       author: "Ahron Pasadilla",
       images: [
-        "assets/pueblo.png",
-        "assets/pueblo-2.png"
+        "/assets/pueblo.png",
+        "/assets/pueblo-2.png"
       ],
       tags: ["POV", "Zamboanga City"]
     },
@@ -60,7 +60,7 @@ const Blog: React.FC<BlogProps> = ({ onBlogClick }) => {
       date: "May 2, 2025",
       author: "Ahron Pasadilla",
       images: [
-        "assets/research.png"
+        "/assets/research.png"
       ],
       tags: ["Forum", "Research"]
     },
@@ -72,7 +72,7 @@ const Blog: React.FC<BlogProps> = ({ onBlogClick }) => {
       date: "April 30, 2025",
       author: "Ahron Pasadilla",
       images: [
-        "assets/alegre.png"
+        "/assets/alegre.png"
       ],
       tags: ["Caffeine", "Coffee"]
     },
@@ -84,7 +84,7 @@ const Blog: React.FC<BlogProps> = ({ onBlogClick }) => {
       date: "August 3, 2023",
       author: "Ahron Pasadilla",
       images: [
-        "assets/wmsu.png"
+        "/assets/wmsu.png"
       ],
       tags: ["College"]
     },
@@ -96,7 +96,7 @@ const Blog: React.FC<BlogProps> = ({ onBlogClick }) => {
       date: "August 15, 2023",
       author: "Ahron Pasadilla",
       images: [
-        "assets/biking-era.png"
+        "/assets/biking-era.png"
       ],
       tags: ["Outdoors", "Performance", "Adventure", "Mountain Biking"]
     },
@@ -108,13 +108,12 @@ const Blog: React.FC<BlogProps> = ({ onBlogClick }) => {
       date: "October 25, 2023",
       author: "Ahron Pasadilla",
       images: [
-        "assets/crochet-collections.png"
+        "/assets/crochet-collections.png"
       ],
       tags: ["Yarns", "Business", "Crochet"]
     },
   ];
   
-
   // Number of cards to show at once based on screen size
   const getVisibleCards = () => {
     if (typeof window !== 'undefined') {
