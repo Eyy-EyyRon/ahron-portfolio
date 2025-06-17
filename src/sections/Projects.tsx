@@ -26,13 +26,23 @@ const Projects: React.FC = () => {
       codeLink: "https://github.com/Eyy-EyyRon?tab=repositories"
     },
 
-     {
+    {
       id: 3,
       title: "Qr scanner Web App",
       description: "A web application that allows users to scan QR codes and view the encoded information, built with React and a QR code scanning library.",
       image: "assets/qrcode.png",
       tags: ["HTML", "CSS", "JavaScript","React"],
       demoLink: "https://qrgenscanner.netlify.app",
+      codeLink: "https://github.com/Eyy-EyyRon?tab=repositories"
+    },
+
+    {
+      id: 4,
+      title: "Recip Web App",
+      description: "A web application that allows users to search for recipes, view details, and save their favorites, built with React and a recipe API.",
+      image: "assets/recipe.png",
+      tags: ["HTML", "CSS", "JavaScript","React"],
+      demoLink: "https://restcipe.netlify.app",
       codeLink: "https://github.com/Eyy-EyyRon?tab=repositories"
     },
   ];
