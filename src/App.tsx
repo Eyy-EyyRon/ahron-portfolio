@@ -5,12 +5,8 @@ import Home from './sections/Home';
 import About from './sections/About';
 import Projects from './sections/Projects';
 import Contact from './sections/Contact';
-import Blog from './sections/Blog';
-import BlogModal from './components/BlogModal';
-import { BlogPostType } from './types';
 
 function App() {
-  const [activeBlog, setActiveBlog] = useState<BlogPostType | null>(null);
   const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
@@ -41,15 +37,10 @@ function App() {
         <Home />
         <About />
         <Projects />
-        <Blog onBlogClick={setActiveBlog} />
         <Contact />
       </main>
       
       <Footer />
-      
-      {activeBlog && (
-        <BlogModal blog={activeBlog} onClose={() => setActiveBlog(null)} />
-      )}
     </div>
   );
 }
