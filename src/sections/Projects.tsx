@@ -15,6 +15,7 @@ const Projects: React.FC = () => {
       demoLink: "https://manage-to-do-webapp.netlify.app",
       codeLink: "https://github.com/Eyy-EyyRon?tab=repositories"
     },
+
     {
       id: 2,
       title: "Pokedex Web App",
@@ -22,6 +23,16 @@ const Projects: React.FC = () => {
       image: "assets/pokedex.png",
       tags: ["HTML", "CSS", "JavaScript","React"],
       demoLink: "https://pokededx.netlify.app",
+      codeLink: "https://github.com/Eyy-EyyRon?tab=repositories"
+    },
+
+     {
+      id: 3,
+      title: "Qr scanner Web App",
+      description: "A web application that allows users to scan QR codes and view the encoded information, built with React and a QR code scanning library.",
+      image: "assets/qrcode.png",
+      tags: ["HTML", "CSS", "JavaScript","React"],
+      demoLink: "https://qrgenscanner.netlify.app",
       codeLink: "https://github.com/Eyy-EyyRon?tab=repositories"
     },
   ];
