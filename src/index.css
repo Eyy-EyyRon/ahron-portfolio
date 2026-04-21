@@ -9,6 +9,76 @@
 
   body {
     @apply font-sans antialiased text-slate-light bg-navy;
+    cursor: none; /* Hide default cursor for custom cursor */
+  }
+
+  /* Light mode styles */
+  html.light body {
+    @apply text-slate-dark bg-white;
+  }
+
+  html.light .bg-navy {
+    @apply bg-slate-100;
+  }
+
+  html.light .bg-navy-light {
+    @apply bg-white;
+  }
+
+  html.light .bg-navy-dark {
+    @apply bg-slate-200;
+  }
+
+  html.light .text-white {
+    @apply text-slate-900;
+  }
+
+  html.light .text-slate {
+    @apply text-slate-600;
+  }
+
+  html.light .text-slate-light {
+    @apply text-slate-700;
+  }
+
+  html.light .border-slate-dark {
+    @apply border-slate-300;
+  }
+
+  /* Dyslexic font mode */
+  html.font-dyslexic body {
+    font-family: 'OpenDyslexic', 'Comic Sans MS', sans-serif;
+    letter-spacing: 0.05em;
+    word-spacing: 0.1em;
+    line-height: 1.6;
+  }
+
+  /* High contrast mode */
+  html.high-contrast body {
+    @apply bg-black text-white;
+  }
+
+  html.high-contrast .bg-gold {
+    @apply bg-yellow-400 text-black;
+  }
+
+  html.high-contrast .text-gold {
+    @apply text-yellow-400;
+  }
+
+  html.high-contrast .border-gold {
+    @apply border-yellow-400;
+  }
+
+  html.high-contrast * {
+    @apply border-2;
+  }
+
+  /* Hide custom cursor on touch devices */
+  @media (hover: none) and (pointer: coarse) {
+    body {
+      cursor: auto;
+    }
   }
 
   ::selection {

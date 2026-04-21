@@ -1,10 +1,15 @@
 import { useEffect, useState } from 'react';
+import { ThemeProvider } from './context/ThemeContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import Scrollytelling from './components/Scrollytelling';
+import CustomCursor from './components/CustomCursor';
+import AccessibilityControls from './components/AccessibilityControls';
 import Home from './sections/Home';
 import About from './sections/About';
 import Projects from './sections/Projects';
 import TryMe from './sections/TryMe';
+import Journal from './sections/Journal';
 import Contact from './sections/Contact';
 
 function App() {
@@ -31,19 +36,31 @@ function App() {
   }, []);
 
   return (
-    <div className="bg-navy min-h-screen font-sans text-slate-light">
-      <Navbar activeSection={activeSection} />
-      
-      <main>
-        <Home />
-        <About />
-        <Projects />
-        <TryMe />
-        <Contact />
-      </main>
-      
-      <Footer />
-    </div>
+    <ThemeProvider>
+      <div className="bg-navy dark:bg-navy min-h-screen font-sans text-slate-light relative">
+        {/* Custom cursor */}
+        <CustomCursor />
+        
+        {/* Immersive 3D Scrollytelling Background */}
+        <Scrollytelling />
+        
+        <Navbar activeSection={activeSection} />
+        
+        <main className="relative z-10">
+          <Home />
+          <About />
+          <Projects />
+          <TryMe />
+          <Journal />
+          <Contact />
+        </main>
+        
+        <Footer />
+        
+        {/* Accessibility controls */}
+        <AccessibilityControls />
+      </div>
+    </ThemeProvider>
   );
 }
 

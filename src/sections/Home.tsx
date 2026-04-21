@@ -1,6 +1,5 @@
 import { motion, Variants } from 'framer-motion';
 import { ArrowDown, Sparkles, ChevronRight } from 'lucide-react';
-import ThreeScene from '../components/ThreeScene';
 import { useEffect, useState } from 'react';
 
 const Home = () => {
@@ -41,22 +40,10 @@ const Home = () => {
     }
   };
 
-  const floatingAnimation = {
-    y: [-10, 10, -10],
-    transition: {
-      duration: 6,
-      repeat: Infinity,
-      ease: "easeInOut" as const
-    }
-  };
-
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Three.js Background */}
-      <ThreeScene />
-      
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-navy/30 via-transparent to-navy z-[1]"></div>
+      {/* Minimal gradient for Scrollytelling visibility */}
+      <div className="absolute inset-0 bg-gradient-to-b from-navy/20 via-transparent to-navy/40 z-[1]"></div>
       
       {/* Content */}
       <motion.div 
@@ -68,18 +55,6 @@ const Home = () => {
           transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)`
         }}
       >
-        {/* Badge */}
-        <motion.div variants={itemVariants} className="mb-6">
-          <motion.span 
-            className="inline-flex items-center gap-2 px-4 py-2 bg-navy-light/80 backdrop-blur-sm rounded-full text-gold text-sm font-medium border border-gold/30"
-            whileHover={{ scale: 1.05, borderColor: 'rgba(230, 194, 0, 0.6)' }}
-            animate={floatingAnimation}
-          >
-            <Sparkles size={16} />
-            Available for opportunities
-          </motion.span>
-        </motion.div>
-
         {/* Name */}
         <motion.div variants={itemVariants} className="mb-4">
           <p className="text-gold font-medium mb-3 tracking-wide">Hello, my name is</p>
@@ -122,14 +97,14 @@ const Home = () => {
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <motion.button
-            onClick={() => document.getElementById('try-me')?.scrollIntoView({ behavior: 'smooth' })}
+            onClick={() => document.getElementById('explore')?.scrollIntoView({ behavior: 'smooth' })}
             className="group relative bg-gold text-navy px-8 py-4 rounded-lg font-semibold overflow-hidden"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             <span className="relative z-10 flex items-center gap-2">
               <Sparkles size={18} />
-              Try Me
+              Explore Skills
               <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </span>
             <motion.div 
@@ -149,29 +124,6 @@ const Home = () => {
             View Projects
             <ArrowDown size={18} className="group-hover:translate-y-1 transition-transform" />
           </motion.button>
-        </motion.div>
-
-        {/* Scroll Indicator */}
-        <motion.div 
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.5, duration: 0.5 }}
-        >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" as const }}
-            className="flex flex-col items-center gap-2 text-slate"
-          >
-            <span className="text-xs tracking-widest uppercase">Scroll</span>
-            <div className="w-6 h-10 border-2 border-slate/50 rounded-full flex justify-center pt-2">
-              <motion.div 
-                className="w-1.5 h-1.5 bg-gold rounded-full"
-                animate={{ y: [0, 12, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" as const }}
-              />
-            </div>
-          </motion.div>
         </motion.div>
       </motion.div>
 
