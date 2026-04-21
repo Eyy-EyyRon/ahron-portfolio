@@ -9,7 +9,6 @@
 
   body {
     @apply font-sans antialiased text-slate-light bg-navy;
-    cursor: none; /* Hide default cursor for custom cursor */
   }
 
   /* Light mode styles */
@@ -72,13 +71,6 @@
 
   html.high-contrast * {
     @apply border-2;
-  }
-
-  /* Hide custom cursor on touch devices */
-  @media (hover: none) and (pointer: coarse) {
-    body {
-      cursor: auto;
-    }
   }
 
   ::selection {
