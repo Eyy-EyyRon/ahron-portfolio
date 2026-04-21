@@ -45,7 +45,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            {['home', 'about', 'projects', 'blog', 'contact'].map((section) => (
+            {['home', 'about', 'projects', 'try-me', 'contact'].map((section) => (
               <button
                 key={section}
                 onClick={() => scrollToSection(section)}
@@ -55,7 +55,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
                     : 'text-slate-light'
                 }`}
               >
-                {section.charAt(0).toUpperCase() + section.slice(1)}
+                {section === 'try-me' ? 'Try Me' : section.charAt(0).toUpperCase() + section.slice(1)}
               </button>
             ))}
           </nav>
@@ -74,7 +74,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
       {isOpen && (
         <div className="md:hidden bg-navy-light">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {['home', 'about', 'projects', 'blog', 'contact'].map((section) => (
+            {['home', 'about', 'projects', 'try-me', 'contact'].map((section) => (
               <button
                 key={section}
                 onClick={() => scrollToSection(section)}
@@ -84,7 +84,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
                     : 'text-slate-light hover:bg-navy hover:text-gold'
                 }`}
               >
-                {section.charAt(0).toUpperCase() + section.slice(1)}
+                {section === 'try-me' ? 'Try Me' : section.charAt(0).toUpperCase() + section.slice(1)}
               </button>
             ))}
           </div>

@@ -4,6 +4,7 @@ import Footer from './components/Footer';
 import Home from './sections/Home';
 import About from './sections/About';
 import Projects from './sections/Projects';
+import TryMe from './sections/TryMe';
 import Contact from './sections/Contact';
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
         <Home />
         <About />
         <Projects />
+        <TryMe />
         <Contact />
       </main>
       
