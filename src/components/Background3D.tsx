@@ -178,7 +178,8 @@ const AsteroidBelt = () => {
   const asteroidsRef = useRef<THREE.Points>(null);
   
   const count = 300;
-  const [positions, colors] = useMemo(() => {
+  const geometry = useMemo(() => {
+    const geo = new THREE.BufferGeometry();
     const pos = new Float32Array(count * 3);
     const col = new Float32Array(count * 3);
     
@@ -194,10 +195,12 @@ const AsteroidBelt = () => {
       col[i * 3 + 2] = 0.5 + Math.random() * 0.5;
     }
     
-    return [pos, col];
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    
+    return geo;
   }, []);
 
-  // Generate large visible asteroids
   const largeAsteroids = useMemo(() => {
     return Array.from({ length: 15 }, (_, i) => ({
       id: i,
@@ -216,26 +219,10 @@ const AsteroidBelt = () => {
 
   return (
     <>
-      {/* Particle asteroids (small dust) */}
-      <points ref={asteroidsRef}>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            count={count}
-            array={positions}
-            itemSize={3}
-          />
-          <bufferAttribute
-            attach="attributes-color"
-            count={count}
-            array={colors}
-            itemSize={3}
-          />
-        </bufferGeometry>
+      <points ref={asteroidsRef} geometry={geometry}>
         <pointsMaterial size={0.08} vertexColors transparent opacity={0.8} />
       </points>
       
-      {/* Large visible asteroid meshes */}
       {largeAsteroids.map((asteroid) => (
         <AsteroidMesh
           key={asteroid.id}
@@ -363,24 +350,25 @@ const ShootingStar = () => {
   const trailRef = useRef<THREE.Points>(null);
   const startTimeRef = useRef(Date.now());
   
-  const trailPositions = useMemo(() => {
+  const trailGeometry = useMemo(() => {
+    const geo = new THREE.BufferGeometry();
     const positions = new Float32Array(20 * 3);
     for (let i = 0; i < 20; i++) {
       positions[i * 3] = 0;
       positions[i * 3 + 1] = 0;
       positions[i * 3 + 2] = 0;
     }
-    return positions;
+    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    return geo;
   }, []);
 
   useFrame(() => {
     if (!starRef.current || !trailRef.current) return;
     
     const elapsed = (Date.now() - startTimeRef.current) / 1000;
-    const cycleDuration = 8; // Shooting star every 8 seconds
+    const cycleDuration = 8;
     const progress = (elapsed % cycleDuration) / cycleDuration;
     
-    // Only show for part of the cycle
     if (progress > 0.3) {
       starRef.current.visible = false;
       trailRef.current.visible = false;
@@ -390,15 +378,13 @@ const ShootingStar = () => {
     starRef.current.visible = true;
     trailRef.current.visible = true;
     
-    // Streak across the sky
     const normalizedProgress = progress / 0.3;
-    const x = 15 - normalizedProgress * 30; // Right to left
-    const y = 8 - normalizedProgress * 5; // Downward angle
+    const x = 15 - normalizedProgress * 30;
+    const y = 8 - normalizedProgress * 5;
     const z = -10;
     
     starRef.current.position.set(x, y, z);
     
-    // Update trail
     const positions = trailRef.current.geometry.attributes.position.array as Float32Array;
     for (let i = 19; i > 0; i--) {
       positions[i * 3] = positions[(i - 1) * 3];
@@ -417,15 +403,7 @@ const ShootingStar = () => {
         <sphereGeometry args={[0.15, 8, 8]} />
         <meshBasicMaterial color="#FFFFFF" />
       </mesh>
-      <points ref={trailRef} visible={false}>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            count={20}
-            array={trailPositions}
-            itemSize={3}
-          />
-        </bufferGeometry>
+      <points ref={trailRef} visible={false} geometry={trailGeometry}>
         <pointsMaterial size={0.1} color="#FFFFFF" transparent opacity={0.8} />
       </points>
     </>
@@ -493,31 +471,31 @@ const MilkyWay = () => {
   const galaxyRef = useRef<THREE.Points>(null);
   
   const count = 2000;
-  const [positions, colors] = useMemo(() => {
+  const geometry = useMemo(() => {
+    const geo = new THREE.BufferGeometry();
     const pos = new Float32Array(count * 3);
     const col = new Float32Array(count * 3);
     
     for (let i = 0; i < count; i++) {
-      // Spiral galaxy math
-      const angle = (i / count) * Math.PI * 6; // 3 full rotations
-      const radius = 20 + (i / count) * 30; // Expanding radius
+      const angle = (i / count) * Math.PI * 6;
+      const radius = 20 + (i / count) * 30;
       const spiralOffset = angle * 2;
-      
-      // Add some randomness for thickness
       const thickness = (Math.random() - 0.5) * 3;
       
       pos[i * 3] = Math.cos(spiralOffset) * radius + (Math.random() - 0.5) * 5;
       pos[i * 3 + 1] = thickness;
-      pos[i * 3 + 2] = Math.sin(spiralOffset) * radius - 40; // Behind the solar system
+      pos[i * 3 + 2] = Math.sin(spiralOffset) * radius - 40;
       
-      // Blue-white colors for stars
       const brightness = 0.5 + Math.random() * 0.5;
-      col[i * 3] = brightness * (0.8 + Math.random() * 0.2); // R
-      col[i * 3 + 1] = brightness * (0.9 + Math.random() * 0.1); // G
-      col[i * 3 + 2] = brightness; // B
+      col[i * 3] = brightness * (0.8 + Math.random() * 0.2);
+      col[i * 3 + 1] = brightness * (0.9 + Math.random() * 0.1);
+      col[i * 3 + 2] = brightness;
     }
     
-    return [pos, col];
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    
+    return geo;
   }, []);
 
   useFrame((state) => {
@@ -527,21 +505,7 @@ const MilkyWay = () => {
   });
 
   return (
-    <points ref={galaxyRef}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          count={count}
-          array={positions}
-          itemSize={3}
-        />
-        <bufferAttribute
-          attach="attributes-color"
-          count={count}
-          array={colors}
-          itemSize={3}
-        />
-      </bufferGeometry>
+    <points ref={galaxyRef} geometry={geometry}>
       <pointsMaterial size={0.15} vertexColors transparent opacity={0.6} />
     </points>
   );

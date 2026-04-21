@@ -527,7 +527,7 @@ const Journal = () => {
                   className="w-full mt-6 py-3 rounded-lg bg-gold text-navy font-semibold hover:bg-gold/90 transition-colors"
                 >
                   Close Article
-                </button>
+                </motion.button>
               </motion.article>
             </motion.div>
           )}
