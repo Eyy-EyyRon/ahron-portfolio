@@ -20,22 +20,22 @@ const Sun = () => {
         color="#FFD700"
         toneMapped={false}
       />
-      {/* Glow effect */}
-      <mesh scale={1.3}>
+      {/* Glow effect - dimmed */}
+      <mesh scale={1.2}>
         <sphereGeometry args={[1.2, 32, 32]} />
         <meshBasicMaterial
-          color="#FFAA00"
+          color="#B8860B"
           transparent
-          opacity={0.3}
+          opacity={0.15}
           toneMapped={false}
         />
       </mesh>
-      <mesh scale={1.6}>
+      <mesh scale={1.4}>
         <sphereGeometry args={[1.2, 32, 32]} />
         <meshBasicMaterial
-          color="#FF6600"
+          color="#8B4513"
           transparent
-          opacity={0.1}
+          opacity={0.08}
           toneMapped={false}
         />
       </mesh>
@@ -136,7 +136,44 @@ const Planet = ({ color, size, distance, orbitSpeed, rotationSpeed, hasRing, moo
   );
 };
 
-// Asteroid belt
+// Individual asteroid mesh
+const AsteroidMesh = ({ angle, radius, size, speed }: { angle: number; radius: number; size: number; speed: number }) => {
+  const meshRef = useRef<THREE.Mesh>(null);
+  const initialY = useMemo(() => (Math.random() - 0.5) * 0.8, []);
+  const rotationAxis = useMemo(() => [
+    Math.random() - 0.5,
+    Math.random() - 0.5,
+    Math.random() - 0.5
+  ], []);
+
+  useFrame((state) => {
+    if (meshRef.current) {
+      const time = state.clock.elapsedTime;
+      // Orbit around sun
+      meshRef.current.position.x = Math.cos(angle + time * speed) * radius;
+      meshRef.current.position.z = Math.sin(angle + time * speed) * radius;
+      meshRef.current.position.y = initialY + Math.sin(time * 0.5 + angle) * 0.1;
+      
+      // Self rotation
+      meshRef.current.rotation.x += rotationAxis[0] * 0.01;
+      meshRef.current.rotation.y += rotationAxis[1] * 0.01;
+      meshRef.current.rotation.z += rotationAxis[2] * 0.01;
+    }
+  });
+
+  return (
+    <mesh ref={meshRef}>
+      <dodecahedronGeometry args={[size, 0]} />
+      <meshStandardMaterial
+        color="#6B6B6B"
+        roughness={0.9}
+        metalness={0.1}
+      />
+    </mesh>
+  );
+};
+
+// Asteroid belt with both particles and meshes
 const AsteroidBelt = () => {
   const asteroidsRef = useRef<THREE.Points>(null);
   
@@ -152,13 +189,23 @@ const AsteroidBelt = () => {
       pos[i * 3 + 1] = (Math.random() - 0.5) * 0.5;
       pos[i * 3 + 2] = Math.sin(angle) * radius;
       
-      // Gray/white colors
       col[i * 3] = 0.5 + Math.random() * 0.5;
       col[i * 3 + 1] = 0.5 + Math.random() * 0.5;
       col[i * 3 + 2] = 0.5 + Math.random() * 0.5;
     }
     
     return [pos, col];
+  }, []);
+
+  // Generate large visible asteroids
+  const largeAsteroids = useMemo(() => {
+    return Array.from({ length: 15 }, (_, i) => ({
+      id: i,
+      angle: (i / 15) * Math.PI * 2 + Math.random() * 0.5,
+      radius: 5.5 + Math.random() * 2.5,
+      size: 0.08 + Math.random() * 0.12,
+      speed: 0.015 + Math.random() * 0.01
+    }));
   }, []);
 
   useFrame((state) => {
@@ -168,23 +215,37 @@ const AsteroidBelt = () => {
   });
 
   return (
-    <points ref={asteroidsRef}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          count={count}
-          array={positions}
-          itemSize={3}
+    <>
+      {/* Particle asteroids (small dust) */}
+      <points ref={asteroidsRef}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={count}
+            array={positions}
+            itemSize={3}
+          />
+          <bufferAttribute
+            attach="attributes-color"
+            count={count}
+            array={colors}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <pointsMaterial size={0.08} vertexColors transparent opacity={0.8} />
+      </points>
+      
+      {/* Large visible asteroid meshes */}
+      {largeAsteroids.map((asteroid) => (
+        <AsteroidMesh
+          key={asteroid.id}
+          angle={asteroid.angle}
+          radius={asteroid.radius}
+          size={asteroid.size}
+          speed={asteroid.speed}
         />
-        <bufferAttribute
-          attach="attributes-color"
-          count={count}
-          array={colors}
-          itemSize={3}
-        />
-      </bufferGeometry>
-      <pointsMaterial size={0.08} vertexColors transparent opacity={0.8} />
-    </points>
+      ))}
+    </>
   );
 };
 
@@ -296,6 +357,137 @@ const SolarSystem = () => {
   );
 };
 
+// UFO - Flying saucer that passes by periodically
+const UFO = () => {
+  const ufoRef = useRef<THREE.Group>(null);
+  const startTimeRef = useRef(Date.now());
+
+  useFrame(() => {
+    if (!ufoRef.current) return;
+    
+    const elapsed = (Date.now() - startTimeRef.current) / 1000;
+    const cycleDuration = 30; // Complete flyby every 30 seconds
+    const progress = (elapsed % cycleDuration) / cycleDuration;
+    
+    // Fly in from left, arc across, exit right
+    const x = -20 + progress * 40; // -20 to 20
+    const y = 5 + Math.sin(progress * Math.PI) * 3; // Arc up and down
+    const z = -5 + Math.sin(progress * Math.PI * 2) * 2; // Slight wobble
+    
+    ufoRef.current.position.set(x, y, z);
+    ufoRef.current.rotation.z = Math.sin(progress * Math.PI * 4) * 0.1; // Slight tilt
+    ufoRef.current.rotation.y = progress * Math.PI * 2; // Spin slowly
+  });
+
+  return (
+    <group ref={ufoRef} visible={false}>
+      {/* Only show during flyby */}
+      <group>
+        {/* Saucer body */}
+        <mesh>
+          <cylinderGeometry args={[0.8, 0.4, 0.2, 32]} />
+          <meshStandardMaterial color="#C0C0C0" metalness={0.8} roughness={0.2} />
+        </mesh>
+        {/* Dome */}
+        <mesh position={[0, 0.2, 0]}>
+          <sphereGeometry args={[0.4, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2]} />
+          <meshStandardMaterial color="#87CEEB" transparent opacity={0.6} metalness={0.9} roughness={0.1} />
+        </mesh>
+        {/* Lights around rim */}
+        {[0, 1, 2, 3, 4, 5].map((i) => {
+          const angle = (i / 6) * Math.PI * 2;
+          return (
+            <mesh key={i} position={[Math.cos(angle) * 0.7, -0.05, Math.sin(angle) * 0.7]}>
+              <sphereGeometry args={[0.08, 8, 8]} />
+              <meshBasicMaterial color={i % 2 === 0 ? "#FF0000" : "#00FF00"} />
+            </mesh>
+          );
+        })}
+        {/* Beam */}
+        <mesh position={[0, -2, 0]} rotation={[0, 0, 0]}>
+          <coneGeometry args={[0.5, 4, 32, 1, true]} />
+          <meshBasicMaterial color="#90EE90" transparent opacity={0.15} side={THREE.DoubleSide} />
+        </mesh>
+      </group>
+    </group>
+  );
+};
+
+// Shooting Star
+const ShootingStar = () => {
+  const starRef = useRef<THREE.Mesh>(null);
+  const trailRef = useRef<THREE.Points>(null);
+  const startTimeRef = useRef(Date.now());
+  
+  const trailPositions = useMemo(() => {
+    const positions = new Float32Array(20 * 3);
+    for (let i = 0; i < 20; i++) {
+      positions[i * 3] = 0;
+      positions[i * 3 + 1] = 0;
+      positions[i * 3 + 2] = 0;
+    }
+    return positions;
+  }, []);
+
+  useFrame(() => {
+    if (!starRef.current || !trailRef.current) return;
+    
+    const elapsed = (Date.now() - startTimeRef.current) / 1000;
+    const cycleDuration = 8; // Shooting star every 8 seconds
+    const progress = (elapsed % cycleDuration) / cycleDuration;
+    
+    // Only show for part of the cycle
+    if (progress > 0.3) {
+      starRef.current.visible = false;
+      trailRef.current.visible = false;
+      return;
+    }
+    
+    starRef.current.visible = true;
+    trailRef.current.visible = true;
+    
+    // Streak across the sky
+    const normalizedProgress = progress / 0.3;
+    const x = 15 - normalizedProgress * 30; // Right to left
+    const y = 8 - normalizedProgress * 5; // Downward angle
+    const z = -10;
+    
+    starRef.current.position.set(x, y, z);
+    
+    // Update trail
+    const positions = trailRef.current.geometry.attributes.position.array as Float32Array;
+    for (let i = 19; i > 0; i--) {
+      positions[i * 3] = positions[(i - 1) * 3];
+      positions[i * 3 + 1] = positions[(i - 1) * 3 + 1];
+      positions[i * 3 + 2] = positions[(i - 1) * 3 + 2];
+    }
+    positions[0] = x;
+    positions[1] = y;
+    positions[2] = z;
+    trailRef.current.geometry.attributes.position.needsUpdate = true;
+  });
+
+  return (
+    <>
+      <mesh ref={starRef} visible={false}>
+        <sphereGeometry args={[0.15, 8, 8]} />
+        <meshBasicMaterial color="#FFFFFF" />
+      </mesh>
+      <points ref={trailRef} visible={false}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={20}
+            array={trailPositions}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <pointsMaterial size={0.1} color="#FFFFFF" transparent opacity={0.8} />
+      </points>
+    </>
+  );
+};
+
 // Main scene
 const Scene = () => {
   return (
@@ -318,6 +510,12 @@ const Scene = () => {
       
       {/* Solar System */}
       <SolarSystem />
+      
+      {/* UFO passing by */}
+      <UFO />
+      
+      {/* Shooting star */}
+      <ShootingStar />
     </>
   );
 };
