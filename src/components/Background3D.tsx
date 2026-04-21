@@ -357,62 +357,6 @@ const SolarSystem = () => {
   );
 };
 
-// UFO - Flying saucer that passes by periodically
-const UFO = () => {
-  const ufoRef = useRef<THREE.Group>(null);
-  const startTimeRef = useRef(Date.now());
-
-  useFrame(() => {
-    if (!ufoRef.current) return;
-    
-    const elapsed = (Date.now() - startTimeRef.current) / 1000;
-    const cycleDuration = 30; // Complete flyby every 30 seconds
-    const progress = (elapsed % cycleDuration) / cycleDuration;
-    
-    // Fly in from left, arc across, exit right
-    const x = -20 + progress * 40; // -20 to 20
-    const y = 5 + Math.sin(progress * Math.PI) * 3; // Arc up and down
-    const z = -5 + Math.sin(progress * Math.PI * 2) * 2; // Slight wobble
-    
-    ufoRef.current.position.set(x, y, z);
-    ufoRef.current.rotation.z = Math.sin(progress * Math.PI * 4) * 0.1; // Slight tilt
-    ufoRef.current.rotation.y = progress * Math.PI * 2; // Spin slowly
-  });
-
-  return (
-    <group ref={ufoRef} visible={false}>
-      {/* Only show during flyby */}
-      <group>
-        {/* Saucer body */}
-        <mesh>
-          <cylinderGeometry args={[0.8, 0.4, 0.2, 32]} />
-          <meshStandardMaterial color="#C0C0C0" metalness={0.8} roughness={0.2} />
-        </mesh>
-        {/* Dome */}
-        <mesh position={[0, 0.2, 0]}>
-          <sphereGeometry args={[0.4, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2]} />
-          <meshStandardMaterial color="#87CEEB" transparent opacity={0.6} metalness={0.9} roughness={0.1} />
-        </mesh>
-        {/* Lights around rim */}
-        {[0, 1, 2, 3, 4, 5].map((i) => {
-          const angle = (i / 6) * Math.PI * 2;
-          return (
-            <mesh key={i} position={[Math.cos(angle) * 0.7, -0.05, Math.sin(angle) * 0.7]}>
-              <sphereGeometry args={[0.08, 8, 8]} />
-              <meshBasicMaterial color={i % 2 === 0 ? "#FF0000" : "#00FF00"} />
-            </mesh>
-          );
-        })}
-        {/* Beam */}
-        <mesh position={[0, -2, 0]} rotation={[0, 0, 0]}>
-          <coneGeometry args={[0.5, 4, 32, 1, true]} />
-          <meshBasicMaterial color="#90EE90" transparent opacity={0.15} side={THREE.DoubleSide} />
-        </mesh>
-      </group>
-    </group>
-  );
-};
-
 // Shooting Star
 const ShootingStar = () => {
   const starRef = useRef<THREE.Mesh>(null);
@@ -488,6 +432,122 @@ const ShootingStar = () => {
   );
 };
 
+// UFO - Simple flyby
+const UFO = () => {
+  const ufoRef = useRef<THREE.Group>(null);
+  const startTimeRef = useRef(Date.now());
+  
+  useFrame(() => {
+    if (!ufoRef.current) return;
+    
+    const elapsed = (Date.now() - startTimeRef.current) / 1000;
+    const cycleDuration = 20; // UFO every 20 seconds
+    const progress = (elapsed % cycleDuration) / cycleDuration;
+    
+    // Only show for part of the cycle
+    if (progress > 0.4) {
+      ufoRef.current.visible = false;
+      return;
+    }
+    
+    ufoRef.current.visible = true;
+    
+    // Fly across the sky
+    const normalizedProgress = progress / 0.4;
+    const x = -20 + normalizedProgress * 40; // Left to right
+    const y = 8 + Math.sin(normalizedProgress * Math.PI) * 2; // Arc motion
+    const z = -12;
+    
+    ufoRef.current.position.set(x, y, z);
+    ufoRef.current.rotation.y = normalizedProgress * Math.PI * 2; // Spin
+  });
+
+  return (
+    <group ref={ufoRef} visible={false}>
+      {/* UFO Saucer */}
+      <mesh position={[0, 0, 0]}>
+        <sphereGeometry args={[0.6, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2]} />
+        <meshStandardMaterial color="#C0C0C0" metalness={0.8} roughness={0.2} />
+      </mesh>
+      {/* UFO Dome */}
+      <mesh position={[0, 0.1, 0]}>
+        <sphereGeometry args={[0.35, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2]} />
+        <meshStandardMaterial color="#60FF60" transparent opacity={0.6} />
+      </mesh>
+      {/* Lights */}
+      {[...Array(6)].map((_, i) => {
+        const angle = (i / 6) * Math.PI * 2;
+        return (
+          <mesh key={i} position={[Math.cos(angle) * 0.5, -0.1, Math.sin(angle) * 0.5]}>
+            <sphereGeometry args={[0.06, 8, 8]} />
+            <meshBasicMaterial color={i % 2 === 0 ? "#FF0000" : "#00FF00"} />
+          </mesh>
+        );
+      })}
+    </group>
+  );
+};
+
+// Milky Way Galaxy - spiral arm of stars
+const MilkyWay = () => {
+  const galaxyRef = useRef<THREE.Points>(null);
+  
+  const count = 2000;
+  const [positions, colors] = useMemo(() => {
+    const pos = new Float32Array(count * 3);
+    const col = new Float32Array(count * 3);
+    
+    for (let i = 0; i < count; i++) {
+      // Spiral galaxy math
+      const angle = (i / count) * Math.PI * 6; // 3 full rotations
+      const radius = 20 + (i / count) * 30; // Expanding radius
+      const spiralOffset = angle * 2;
+      
+      // Add some randomness for thickness
+      const thickness = (Math.random() - 0.5) * 3;
+      
+      pos[i * 3] = Math.cos(spiralOffset) * radius + (Math.random() - 0.5) * 5;
+      pos[i * 3 + 1] = thickness;
+      pos[i * 3 + 2] = Math.sin(spiralOffset) * radius - 40; // Behind the solar system
+      
+      // Blue-white colors for stars
+      const brightness = 0.5 + Math.random() * 0.5;
+      col[i * 3] = brightness * (0.8 + Math.random() * 0.2); // R
+      col[i * 3 + 1] = brightness * (0.9 + Math.random() * 0.1); // G
+      col[i * 3 + 2] = brightness; // B
+    }
+    
+    return [pos, col];
+  }, []);
+
+  useFrame((state) => {
+    if (galaxyRef.current) {
+      galaxyRef.current.rotation.y = state.clock.elapsedTime * 0.005;
+    }
+  });
+
+  return (
+    <points ref={galaxyRef}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          count={count}
+          array={positions}
+          itemSize={3}
+        />
+        <bufferAttribute
+          attach="attributes-color"
+          count={count}
+          array={colors}
+          itemSize={3}
+        />
+      </bufferGeometry>
+      <pointsMaterial size={0.15} vertexColors transparent opacity={0.6} />
+    </points>
+  );
+};
+
+
 // Main scene
 const Scene = () => {
   return (
@@ -496,6 +556,9 @@ const Scene = () => {
       <ambientLight intensity={0.3} />
       <pointLight position={[0, 0, 0]} intensity={2} color="#FFD700" distance={50} />
       <directionalLight position={[5, 5, 5]} intensity={0.5} />
+      
+      {/* Milky Way Galaxy - far background */}
+      <MilkyWay />
       
       {/* Stars background */}
       <Stars 
@@ -508,14 +571,16 @@ const Scene = () => {
         speed={0.5}
       />
       
+      
       {/* Solar System */}
       <SolarSystem />
       
-      {/* UFO passing by */}
-      <UFO />
       
       {/* Shooting star */}
       <ShootingStar />
+      
+      {/* UFO passing by */}
+      <UFO />
     </>
   );
 };

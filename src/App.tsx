@@ -6,6 +6,8 @@ import Background3D from './components/Background3D';
 import AccessibilityControls from './components/AccessibilityControls';
 import FunFacts from './components/FunFacts';
 import Home from './sections/Home';
+import About from './sections/About';
+import Explore from './sections/Explore';
 import Projects from './sections/Projects';
 import Journal from './sections/Journal';
 import Contact from './sections/Contact';
@@ -43,7 +45,9 @@ function App() {
         <Navbar activeSection={activeSection} />
         
         <main className="relative z-10">
-          <Home />       
+          <Home />
+          <About />
+          <Explore />
           <Projects />
           <Journal />
           <Contact />

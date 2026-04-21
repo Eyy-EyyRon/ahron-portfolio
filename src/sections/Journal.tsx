@@ -347,64 +347,93 @@ const Journal = () => {
         </motion.div>
 
         {/* Journal Grid */}
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-8">
           <AnimatePresence mode="popLayout">
             {filteredEntries.map((entry, index) => (
               <motion.article
                 key={entry.id}
                 layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ delay: index * 0.1 }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ delay: index * 0.08, duration: 0.4 }}
                 onClick={() => setSelectedEntry(entry)}
-                className="group bg-navy-light/50 backdrop-blur-sm rounded-xl p-6 border border-slate-dark hover:border-gold/50 transition-all cursor-pointer"
+                className="group relative bg-navy-light/60 backdrop-blur-sm rounded-2xl p-8 border border-slate-dark/60 hover:border-gold/40 transition-all duration-500 cursor-pointer overflow-hidden"
                 data-cursor
                 data-cursor-text="Read"
+                whileHover={{ y: -8, transition: { duration: 0.3 } }}
               >
+                {/* Gradient hover overlay */}
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+                  style={{ 
+                    background: `radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), ${categoryColors[entry.category].bg.replace('bg-', '').replace('/20', '20')}, transparent 40%)` 
+                  }}
+                />
+                
+                {/* Glow effect on hover */}
+                <div 
+                  className="absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-30 blur-xl transition-opacity duration-500"
+                  style={{ backgroundColor: categoryColors[entry.category].text.replace('text-', '').replace('-400', '') === 'blue' ? '#3b82f6' : categoryColors[entry.category].text.replace('text-', '').replace('-400', '') === 'purple' ? '#a855f7' : categoryColors[entry.category].text.replace('text-', '').replace('-400', '') === 'green' ? '#22c55e' : '#f97316' }}
+                />
+
                 {/* Header */}
-                <div className="flex items-start justify-between mb-4">
-                  <div 
-                    className={`w-12 h-12 rounded-lg flex items-center justify-center ${categoryColors[entry.category].bg}`}
+                <div className="flex items-start justify-between mb-6 relative z-10">
+                  <motion.div 
+                    className={`w-14 h-14 rounded-xl flex items-center justify-center ${categoryColors[entry.category].bg} group-hover:scale-110 transition-transform duration-300`}
+                    whileHover={{ rotate: 5 }}
                   >
                     <span className={categoryColors[entry.category].text}>
                       {entry.icon}
                     </span>
-                  </div>
-                  <span className={`text-xs px-3 py-1 rounded-full ${categoryColors[entry.category].bg} ${categoryColors[entry.category].text}`}>
+                  </motion.div>
+                  <span className={`text-xs px-4 py-1.5 rounded-full ${categoryColors[entry.category].bg} ${categoryColors[entry.category].text} font-medium uppercase tracking-wider`}>
                     {entry.category}
                   </span>
                 </div>
 
                 {/* Content */}
-                <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-gold transition-colors">
+                <h3 className="text-xl font-heading font-semibold text-white mb-3 group-hover:text-gold transition-colors duration-300 relative z-10">
                   {entry.title}
                 </h3>
-                <p className="text-slate-light text-sm mb-4 line-clamp-2">
+                <p className="text-slate-light/90 text-sm mb-6 line-clamp-3 leading-relaxed relative z-10">
                   {entry.excerpt}
                 </p>
 
                 {/* Meta */}
-                <div className="flex items-center gap-4 text-slate text-xs">
-                  <span className="flex items-center gap-1">
-                    <Calendar size={14} />
+                <div className="flex items-center gap-6 text-slate text-sm mb-4 relative z-10">
+                  <span className="flex items-center gap-2">
+                    <Calendar size={16} className="text-gold/60" />
                     {entry.date}
                   </span>
-                  <span className="flex items-center gap-1">
-                    <Clock size={14} />
+                  <span className="flex items-center gap-2">
+                    <Clock size={16} className="text-gold/60" />
                     {entry.readTime}
                   </span>
                 </div>
 
                 {/* Tags */}
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {entry.tags.map((tag) => (
-                    <span key={tag} className="text-xs text-slate flex items-center gap-1">
-                      <Tag size={12} />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  {entry.tags.map((tag, tagIndex) => (
+                    <motion.span 
+                      key={tag} 
+                      className="text-xs px-3 py-1.5 rounded-full bg-navy/80 text-slate-light flex items-center gap-1.5 border border-slate-dark/50 hover:border-gold/30 transition-colors"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: tagIndex * 0.05 }}
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <Tag size={10} className="text-gold/60" />
                       {tag}
-                    </span>
+                    </motion.span>
                   ))}
                 </div>
+                
+                {/* Bottom accent bar */}
+                <div 
+                  className="absolute bottom-0 left-0 h-1 w-0 group-hover:w-full transition-all duration-500 rounded-full"
+                  style={{ backgroundColor: categoryColors[entry.category].text.replace('text-', '').replace('-400', '') === 'blue' ? '#3b82f6' : categoryColors[entry.category].text.replace('text-', '').replace('-400', '') === 'purple' ? '#a855f7' : categoryColors[entry.category].text.replace('text-', '').replace('-400', '') === 'green' ? '#22c55e' : '#f97316' }}
+                />
               </motion.article>
             ))}
           </AnimatePresence>
@@ -417,66 +446,83 @@ const Journal = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
               onClick={() => setSelectedEntry(null)}
             >
               <motion.article
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                initial={{ opacity: 0, y: 40, scale: 0.9 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 20, scale: 0.95 }}
+                exit={{ opacity: 0, y: 40, scale: 0.9 }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
                 onClick={(e) => e.stopPropagation()}
-                className="bg-navy-light rounded-2xl p-8 max-w-2xl w-full max-h-[80vh] overflow-y-auto border border-slate-dark"
+                className="bg-navy-light/95 backdrop-blur-xl rounded-3xl p-8 sm:p-10 max-w-3xl w-full max-h-[85vh] overflow-y-auto border border-slate-dark/80 shadow-2xl"
               >
                 {/* Header */}
-                <div className="flex items-center gap-4 mb-6">
-                  <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${categoryColors[selectedEntry.category].bg}`}>
+                <div className="flex items-start gap-5 mb-8">
+                  <motion.div 
+                    className={`w-16 h-16 rounded-2xl flex items-center justify-center ${categoryColors[selectedEntry.category].bg} flex-shrink-0`}
+                    initial={{ scale: 0.8, rotate: -10 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ delay: 0.1, type: "spring" }}
+                  >
                     <span className={categoryColors[selectedEntry.category].text}>
                       {selectedEntry.icon}
                     </span>
-                  </div>
-                  <div>
-                    <span className={`text-xs px-3 py-1 rounded-full ${categoryColors[selectedEntry.category].bg} ${categoryColors[selectedEntry.category].text}`}>
+                  </motion.div>
+                  <div className="flex-1">
+                    <span className={`text-xs px-4 py-1.5 rounded-full ${categoryColors[selectedEntry.category].bg} ${categoryColors[selectedEntry.category].text} font-medium uppercase tracking-wider`}>
                       {selectedEntry.category}
                     </span>
-                    <h3 className="text-2xl font-bold text-white mt-2">{selectedEntry.title}</h3>
+                    <h3 className="text-2xl sm:text-3xl font-heading font-bold text-white mt-3 leading-tight">{selectedEntry.title}</h3>
                   </div>
                 </div>
 
                 {/* Meta */}
-                <div className="flex items-center gap-4 text-slate text-sm mb-6 pb-6 border-b border-slate-dark">
-                  <span className="flex items-center gap-1">
-                    <Calendar size={16} />
+                <div className="flex flex-wrap items-center gap-4 text-slate text-sm mb-8 pb-6 border-b border-slate-dark/50">
+                  <span className="flex items-center gap-2 bg-navy/60 px-3 py-1.5 rounded-full">
+                    <Calendar size={16} className="text-gold/70" />
                     {selectedEntry.date}
                   </span>
-                  <span className="flex items-center gap-1">
-                    <Clock size={16} />
+                  <span className="flex items-center gap-2 bg-navy/60 px-3 py-1.5 rounded-full">
+                    <Clock size={16} className="text-gold/70" />
                     {selectedEntry.readTime} read
                   </span>
-                  <button className="flex items-center gap-1 text-gold hover:text-white transition-colors ml-auto">
+                  <motion.button 
+                    className="flex items-center gap-2 text-gold hover:text-white transition-colors ml-auto bg-gold/10 hover:bg-gold/20 px-4 py-1.5 rounded-full"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     <ExternalLink size={16} />
                     Share
-                  </button>
+                  </motion.button>
                 </div>
 
                 {/* Content */}
-                <div className="prose prose-invert max-w-none">
-                  <p className="text-slate-light leading-relaxed whitespace-pre-line">
+                <div className="prose prose-invert max-w-none mb-8">
+                  <p className="text-slate-light/95 leading-relaxed whitespace-pre-line text-base sm:text-lg">
                     {selectedEntry.content}
                   </p>
                 </div>
 
                 {/* Tags */}
-                <div className="flex flex-wrap gap-2 mt-6 pt-6 border-t border-slate-dark">
-                  {selectedEntry.tags.map((tag) => (
-                    <span key={tag} className="text-sm px-3 py-1 rounded-full bg-navy text-slate-light flex items-center gap-1">
-                      <Tag size={14} />
+                <div className="flex flex-wrap gap-3 mb-8">
+                  {selectedEntry.tags.map((tag, tagIndex) => (
+                    <motion.span 
+                      key={tag} 
+                      className="text-sm px-4 py-2 rounded-full bg-navy text-slate-light flex items-center gap-2 border border-slate-dark/50 hover:border-gold/30 transition-colors cursor-default"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: tagIndex * 0.05 }}
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <Tag size={14} className="text-gold" />
                       {tag}
-                    </span>
+                    </motion.span>
                   ))}
                 </div>
 
                 {/* Close */}
-                <button
+                <motion.button
                   onClick={() => setSelectedEntry(null)}
                   className="w-full mt-6 py-3 rounded-lg bg-gold text-navy font-semibold hover:bg-gold/90 transition-colors"
                 >
