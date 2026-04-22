@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ProjectType } from '../types';
-import { Github, ExternalLink } from 'lucide-react';
+import { Github, ExternalLink, Sparkles } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Projects: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
@@ -82,62 +83,119 @@ const Projects: React.FC = () => {
           ))}
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.map((project, index) => (
-            <div 
-              key={project.id}
-              className="bg-navy rounded-lg overflow-hidden shadow-lg transform transition-all hover:-translate-y-2 hover:shadow-xl animate-fadeIn"
-              style={{ animationDelay: `${index * 0.15}s` }}
-            >
-              <div className="relative h-48 overflow-hidden">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform hover:scale-110 duration-500"
-                />
-              </div>
-              
-              <div className="p-6">
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {project.tags.map(tag => (
-                    <span key={tag} className="text-xs bg-navy-dark text-gold px-2 py-1 rounded">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                
-                <h3 className="text-xl font-heading font-semibold text-white mb-2">
-                  {project.title}
-                </h3>
-                
-                <p className="text-slate-light mb-6">
-                  {project.description}
-                </p>
-                
-                <div className="flex space-x-4">
-                  <a 
-                    href={project.codeLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-slate-light hover:text-gold transition-colors flex items-center"
-                  >
-                    <Github size={18} className="mr-1" />
-                    <span>Code</span>
-                  </a>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-1000">
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project, index) => (
+              <motion.div
+                key={project.id}
+                layout
+                initial={{ opacity: 0, y: 30, rotateX: -10 }}
+                animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ delay: index * 0.1, duration: 0.5 }}
+                whileHover={{ y: -10, scale: 1.02 }}
+                className="group relative"
+              >
+                {/* Holographic Card */}
+                <div className="relative bg-navy rounded-2xl overflow-hidden border border-slate-dark/50 hover:border-gold/50 transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-gold/10">
                   
-                  <a 
-                    href={project.demoLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-slate-light hover:text-gold transition-colors flex items-center"
-                  >
-                    <ExternalLink size={18} className="mr-1" />
-                    <span>Demo</span>
-                  </a>
+                  {/* Holographic overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-gold/5 via-transparent to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                  
+                  {/* Shine effect */}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 pointer-events-none"
+                    initial={{ x: '-100%' }}
+                    whileHover={{ x: '200%' }}
+                    transition={{ duration: 0.8 }}
+                  />
+
+                  {/* Image with 3D tilt container */}
+                  <div className="relative h-52 overflow-hidden">
+                    <motion.img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover"
+                      whileHover={{ scale: 1.1, rotateY: 5 }}
+                      transition={{ duration: 0.4 }}
+                    />
+                    
+                    {/* Floating tags on image */}
+                    <div className="absolute top-3 right-3 flex flex-wrap gap-1 justify-end max-w-[70%]">
+                      {project.tags.slice(0, 3).map((tag, i) => (
+                        <motion.span
+                          key={tag}
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.1 }}
+                          className="text-xs bg-navy/80 backdrop-blur-sm text-gold px-2 py-1 rounded-full border border-gold/30"
+                        >
+                          {tag}
+                        </motion.span>
+                      ))}
+                    </div>
+                    
+                    {/* Gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent" />
+                  </div>
+                  
+                  <div className="p-6 relative">
+                    {/* Sparkle icon */}
+                    <motion.div
+                      className="absolute -top-3 right-6 w-8 h-8 rounded-full bg-gold/20 flex items-center justify-center"
+                      animate={{ rotate: [0, 10, -10, 0], scale: [1, 1.1, 1] }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                    >
+                      <Sparkles className="w-4 h-4 text-gold" />
+                    </motion.div>
+                    
+                    <h3 className="text-xl font-heading font-bold text-white mb-2 group-hover:text-gold transition-colors">
+                      {project.title}
+                    </h3>
+                    
+                    <p className="text-slate-light/80 text-sm mb-6 line-clamp-2">
+                      {project.description}
+                    </p>
+                    
+                    {/* Animated action buttons */}
+                    <div className="flex items-center justify-between">
+                      <motion.a
+                        href={project.codeLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-slate hover:text-gold transition-colors text-sm"
+                        whileHover={{ x: 3 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Github size={16} />
+                        <span>Code</span>
+                      </motion.a>
+                      
+                      <motion.a
+                        href={project.demoLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 bg-gold/10 hover:bg-gold text-gold hover:text-navy px-4 py-2 rounded-full text-sm font-medium transition-all duration-300"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <ExternalLink size={16} />
+                        <span>Live Demo</span>
+                      </motion.a>
+                    </div>
+                  </div>
+                  
+                  {/* Bottom glow line */}
+                  <motion.div
+                    className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-gold via-orange-400 to-gold"
+                    initial={{ width: '0%' }}
+                    whileHover={{ width: '100%' }}
+                    transition={{ duration: 0.4 }}
+                  />
                 </div>
-              </div>
-            </div>
-          ))}
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       </div>
     </section>

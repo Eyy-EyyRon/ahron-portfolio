@@ -1,5 +1,6 @@
 import React from 'react';
 import { Github, Facebook, Instagram, Linkedin, Heart } from 'lucide-react';
+import FunFacts from './FunFacts';
 
 const Footer: React.FC = () => {
  const socialLinks = [
@@ -27,6 +28,11 @@ const Footer: React.FC = () => {
                 {link.icon}
               </a>
             ))}
+          </div>
+          
+          {/* Fun Facts Ticker */}
+          <div className="mb-4">
+            <FunFacts />
           </div>
           
           <p className="text-slate text-sm flex items-center">

@@ -4,7 +4,9 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Background3D from './components/Background3D';
 import AccessibilityControls from './components/AccessibilityControls';
-import FunFacts from './components/FunFacts';
+import AIAssistant from './components/AIAssistant';
+import SecretTerminal from './components/SecretTerminal';
+import KonamiEasterEgg from './components/KonamiEasterEgg';
 import Home from './sections/Home';
 import About from './sections/About';
 import Explore from './sections/Explore';
@@ -58,8 +60,10 @@ function App() {
         {/* Accessibility controls */}
         <AccessibilityControls />
         
-        {/* Fun Facts Widget */}
-        <FunFacts />
+        {/* Wow Factor Features */}
+        <AIAssistant />
+        <SecretTerminal />
+        <KonamiEasterEgg />
       </div>
     </ThemeProvider>
   );
