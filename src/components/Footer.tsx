@@ -31,7 +31,7 @@ const Footer: React.FC = () => {
           </div>
           
           {/* Fun Facts Ticker */}
-          <div className="mb-4">
+          <div className="my-4 py-3 px-4 bg-navy/30 rounded-full border border-slate-dark/30">
             <FunFacts />
           </div>
           

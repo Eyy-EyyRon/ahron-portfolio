@@ -49,7 +49,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
               <button
                 key={section}
                 onClick={() => scrollToSection(section)}
-                className={`text-sm font-medium transition-colors hover:text-gold ${
+                className={`text-xs font-mono tracking-wider uppercase transition-colors hover:text-gold ${
                   activeSection === section 
                     ? 'text-gold' 
                     : 'text-slate-light'
@@ -78,7 +78,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
               <button
                 key={section}
                 onClick={() => scrollToSection(section)}
-                className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${
+                className={`block w-full text-left px-3 py-2 rounded-md text-sm font-mono tracking-wider uppercase ${
                   activeSection === section
                     ? 'bg-navy-dark text-gold'
                     : 'text-slate-light hover:bg-navy hover:text-gold'

@@ -21,8 +21,9 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Poppins', 'sans-serif'],
-        heading: ['Poppins', 'sans-serif'],
+        sans: ['Work Sans', 'sans-serif'],
+        heading: ['Space Mono', 'monospace'],
+        mono: ['Space Mono', 'monospace'],
       },
       animation: {
         'float': 'float 6s ease-in-out infinite',

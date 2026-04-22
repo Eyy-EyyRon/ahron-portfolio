@@ -5,15 +5,19 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    font-size: 16px;
   }
 
   body {
-    @apply font-sans antialiased text-slate-light bg-navy;
+    @apply font-sans antialiased bg-navy;
+    color: #F3F4F6; /* Off-white for high contrast, not pure white */
+    line-height: 1.6;
   }
 
   /* Light mode styles */
   html.light body {
-    @apply text-slate-dark bg-white;
+    @apply bg-white;
+    color: #1A1A1A; /* Dark gray for high contrast, not pure black */
   }
 
   html.light .bg-navy {
@@ -92,7 +96,8 @@
 
 @layer components {
   .nav-link {
-    @apply relative text-slate-light hover:text-gold transition-colors duration-300;
+    @apply relative hover:text-gold transition-colors duration-300 font-mono text-sm tracking-wider uppercase;
+    color: #F3F4F6;
   }
 
   .nav-link::after {
@@ -104,11 +109,12 @@
   }
 
   .btn-primary {
-    @apply bg-transparent hover:bg-gold text-gold hover:text-navy border border-gold rounded-md px-6 py-3 font-medium transition-all duration-300 transform hover:scale-105;
+    @apply bg-transparent hover:bg-gold text-gold hover:text-navy border border-gold rounded-md px-6 py-3 transition-all duration-300 transform hover:scale-105 font-mono text-sm tracking-wider;
   }
 
   .section-heading {
-    @apply text-3xl sm:text-4xl font-heading font-bold text-white mb-4;
+    @apply text-3xl sm:text-4xl font-heading font-bold mb-4;
+    color: #F3F4F6;
   }
 
   .section-divider {
